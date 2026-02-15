@@ -1,0 +1,39 @@
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+
+rule_files:
+  # - "first_rules.yml"
+  # - "second_rules.yml"
+
+scrape_configs:
+  # Prometheus itself
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['localhost:9090']
+
+  # Flask Application
+  - job_name: 'ai-healer-app'
+    static_configs:
+      - targets: ['app:5000']
+    metrics_path: '/metrics'
+    scrape_interval: 30s
+
+  # Jenkins
+  - job_name: 'jenkins'
+    static_configs:
+      - targets: ['jenkins:8080']
+    metrics_path: '/prometheus'
+    scrape_interval: 60s
+
+  # Redis
+  - job_name: 'redis'
+    static_configs:
+      - targets: ['redis:6379']
+    scrape_interval: 30s
+
+  # Node Exporter (if available)
+  - job_name: 'node'
+    static_configs:
+      - targets: ['localhost:9100']
+    scrape_interval: 30s
